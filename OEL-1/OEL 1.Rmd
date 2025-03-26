@@ -1,0 +1,91 @@
+---
+title: "OEL 1"
+author: "Abdul Ghani  F23607005"
+date: "2025-03-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task 1
+
+### Loading and Cleaning Data
+
+```{r}
+# Set working directory
+setwd("D:/OEL 1")
+
+# Load dataset
+data <- read.csv("D:/OEL 1/WHR2024.csv")
+
+# Display first 5 rows
+head(data, 5)
+```
+
+### Summary Statistics
+
+```{r}
+# Display summary of dataset
+summary(data)
+```
+
+### Data Cleaning
+
+```{r}
+# Check for missing values
+print(colSums(is.na(data)))
+
+# Remove rows with any missing values
+cleaned_data <- na.omit(data)
+
+# Check the first few rows of the cleaned data
+head(cleaned_data)
+
+# Confirm no missing values
+print(colSums(is.na(cleaned_data)))
+```
+
+### Save Cleaned Data
+
+```{r}
+# Save cleaned dataset to CSV
+write.csv(cleaned_data, "cleaned_happiness.csv", row.names = FALSE)
+```
+
+## Task 2
+
+### Importing Data
+
+```{r}
+library(ggplot2)
+library(lubridate)
+setwd("D:\\OEL\ 1")
+data <- read.csv("GlobalTemperatures.csv")
+```
+
+### Get Year from dataset
+
+```{r}
+data$Year <- year(as.Date(data$dt))
+```
+### Line Chart: Global Temperature Change Over Time
+
+```{r, fig.width=7, fig.height=5}
+png("global_temperature_trend.png", width=700, height=500)
+ggplot(data, aes(x=Year, y=LandAverageTemperature)) + 
+  geom_line(color="blue") + 
+  labs(title="Global Temperature Change Over Time", 
+       x="Year", y="Land Average Temperature (°C)") + 
+  theme_minimal()
+dev.off()
+```
+
+```{r}
+library(png)
+library(grid)
+
+img <- readPNG("global_temperature_trend.png")
+grid.raster(img)
+```
